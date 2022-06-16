@@ -2,10 +2,20 @@ import React, { useState } from 'react';
 import './App.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import WeatherCard from './features/weather/WeatherCard';
+import { retrieveLatitudeLongtitude } from './features/weather/weatherSlice';
+
+// const OPENWEATHER_KEY = process.env.REACT_APP_TRIAL_KEY;
+console.log(process.env);
 
 // App idea: https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.mdhttps://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.md
 function App() {
   const [city, setCity] = useState('');
+
+  const handleButtonClick = () => {
+    console.log(retrieveLatitudeLongtitude(city));
+  }
+
   return (
     <div>
       <h1>Weather App</h1>
@@ -13,8 +23,9 @@ function App() {
       <div>
         {/* Make text field and button align on the same row/height */}
         <TextField label="City" value={city} onChange={(e) => setCity(e.target.value)}/>
-        <Button variant="contained">Search</Button>
+        <Button variant="contained" onClick={handleButtonClick}>Search</Button>
       </div>
+      <WeatherCard />
     </div>
   );
 }
