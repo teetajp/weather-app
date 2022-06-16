@@ -5,8 +5,7 @@ import TextField from '@mui/material/TextField';
 import WeatherCard from './features/weather/WeatherCard';
 import { retrieveLatitudeLongtitude } from './features/weather/weatherSlice';
 
-// const OPENWEATHER_KEY = process.env.REACT_APP_TRIAL_KEY;
-console.log(process.env);
+// TODO: style app with material UI
 
 // App idea: https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.mdhttps://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.md
 function App() {

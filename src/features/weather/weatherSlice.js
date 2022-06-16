@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+    city: '',
+    lat: '',
+    lon: ''
+}
+
 export const retrieveLatitudeLongtitude = (cityName) => {
     // TODO: retrieve city from API
 
@@ -14,15 +20,25 @@ export const retrieveWeather = (latitude, longtitude) => {
     return { city, state, country, description, temp, humidity, weatherIcon};
 }
 
+// TODO: Configure initial state
+// TODO: create weatherSlice reducer to add weather data to the store
+// TODO: create weatherSlice reducer to remove weather data from the store
+// TODO: createAsyncThunk for fetching Weather API
 export const weatherSlice = createSlice({
     name: 'weather',
-    initialState: {
-        city: '',
-        lat: '',
-        lon: ''
-
-    },
+    initialState,
     reducers: {
-
+        addLocation: (state, action) => {
+            state.location = ""
+        }, // add a location and its weather data
+        removeLocation: (state) => {
+            state.location = ""
+        }, // remove the location and its weather data
     }
 });
+
+
+// Action creators for each case reducer function
+export const { addLocation, removeLocation } = weatherSlice.actions;
+
+export default weatherSlice.reducer;
