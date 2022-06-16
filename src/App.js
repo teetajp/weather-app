@@ -3,7 +3,7 @@ import './App.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import WeatherCard from './features/weather/WeatherCard';
-import { retrieveLatitudeLongtitude } from './features/weather/weatherSlice';
+import { retrieveLatitudeLongitude } from './features/weather/locationsSlice';
 
 // TODO: style app with material UI
 
@@ -12,7 +12,7 @@ function App() {
   const [city, setCity] = useState('');
 
   const handleButtonClick = () => {
-    console.log(retrieveLatitudeLongtitude(city));
+    console.log(retrieveLatitudeLongitude(city));
   }
 
   return (
@@ -20,10 +20,11 @@ function App() {
       <h1>Weather App</h1>
       <h2>Search for a city to get its weather conditions.</h2>
       <div>
-        {/* Make text field and button align on the same row/height */}
+        {/*  : Make text field and button align on the same row/height */}
         <TextField label="City" value={city} onChange={(e) => setCity(e.target.value)}/>
         <Button variant="contained" onClick={handleButtonClick}>Search</Button>
       </div>
+      {/* TODO: Add list comprehension to display weather card for each city that we have added */}
       <WeatherCard />
     </div>
   );
