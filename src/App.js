@@ -4,12 +4,15 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import WeatherCard from './features/weather/WeatherCard';
 import { retrieveLatitudeLongitude } from './features/weather/locationsSlice';
+import { useGetCoordinatesQuery, useGetWeatherQuery } from './features/api/weatherApiSlice';
 
 // TODO: style app with material UI
 
 // App idea: https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.mdhttps://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.md
 function App() {
   const [city, setCity] = useState('');
+  
+  // console.log( useGetCoordinatesQuery("Champaign") );
 
   const handleButtonClick = () => {
     console.log(retrieveLatitudeLongitude(city));
