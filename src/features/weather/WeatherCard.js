@@ -6,6 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import { useGetCoordinatesQuery, useGetWeatherQuery } from '../api/weatherApiSlice';
 
 export const WeatherDisplay = () => {
@@ -14,7 +15,14 @@ export const WeatherDisplay = () => {
     const locations = useSelector((state) => state.locations);
     console.log(locations);
     return (
-        locations.map(location => <WeatherCard key={location} cityName={location} />)
+        <Grid container spacing={3}>
+            {locations.map(location => (
+                <Grid item xs={3}>
+                    <WeatherCard key={location} cityName={location} />
+                </Grid>
+            ))}
+        </Grid>
+        
     );
 }
 // TODO: style weather card component

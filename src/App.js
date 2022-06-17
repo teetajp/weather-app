@@ -12,7 +12,6 @@ import { useGetCoordinatesQuery, useGetWeatherQuery } from './features/api/weath
 function App() {
   const [city, setCity] = useState('');
   
-  // console.log( useGetCoordinatesQuery("Champaign") );
 
   const handleButtonClick = () => {
     console.log(retrieveLatitudeLongitude(city));

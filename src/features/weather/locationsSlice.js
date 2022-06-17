@@ -34,7 +34,9 @@ export const retrieveWeather = (latitude, longitude) => {
 // TODO: createAsyncThunk for fetching Weather API ---> checkout RTK Query for data fetching
 export const locationsSlice = createSlice({
     name: 'locations',
-    initialState: ["Champaign", "Bangkok", "Kansas City"],
+    // initialState: [],
+    initialState: ["Champaign", "Bangkok"],
+    // initialState: ["Champaign", "Bangkok", "Kansas City", "London", "New Jersey", "Paris"],
     // TODO: add some sort of ID system instead of latitude and longitude
     reducers: {
         addLocation: (state, action) => {
