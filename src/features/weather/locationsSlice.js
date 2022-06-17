@@ -1,10 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// TODO: Configure initial state
-const initialState = {
-    locationsList: [],
-}
-
 const locationData = {
     city: '',
     lat: '',
@@ -39,7 +34,7 @@ export const retrieveWeather = (latitude, longitude) => {
 // TODO: createAsyncThunk for fetching Weather API ---> checkout RTK Query for data fetching
 export const locationsSlice = createSlice({
     name: 'locations',
-    initialState,
+    initialState: ["Champaign", "Bangkok", "Kansas City"],
     // TODO: add some sort of ID system instead of latitude and longitude
     reducers: {
         addLocation: (state, action) => {

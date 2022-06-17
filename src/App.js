@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import WeatherCard from './features/weather/WeatherCard';
+import WeatherCard, { WeatherDisplay } from './features/weather/WeatherCard';
 import { retrieveLatitudeLongitude } from './features/weather/locationsSlice';
 import { useGetCoordinatesQuery, useGetWeatherQuery } from './features/api/weatherApiSlice';
 
@@ -28,7 +28,7 @@ function App() {
         <Button variant="contained" onClick={handleButtonClick}>Search</Button>
       </div>
       {/* TODO: Add list comprehension to display weather card for each city that we have added */}
-      <WeatherCard />
+      <WeatherDisplay />
     </div>
   );
 }
