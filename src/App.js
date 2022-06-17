@@ -18,6 +18,9 @@ function App() {
   const handleSearchButtonClick = () => {
     dispatch(addLocation(city));
     // console.log(locations);
+    // TODO: check if search query is valid
+    // TODO: If so, then get weather and add to weatherlist, with lat/lon as ID
+    // TODO: If not, show an alert that its invalid 
   }
 
   return (
