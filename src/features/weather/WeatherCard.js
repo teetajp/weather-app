@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,12 +8,12 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { useGetCoordinatesQuery, useGetWeatherQuery } from '../api/weatherApiSlice';
+import { removeLocation } from './locationsSlice';
 
-export const WeatherDisplay = () => {
+export default function WeatherDisplay ({ locations }) {
     // TODO: fetch data from list of cities
-    const dispatch = useDispatch();
-    const locations = useSelector((state) => state.locations);
-    console.log(locations);
+   
+    // console.log(locations);
     return (
         <Grid container spacing={3}>
             {locations.map(location => (
@@ -26,16 +26,16 @@ export const WeatherDisplay = () => {
     );
 }
 // TODO: style weather card component
-export default function WeatherCard({ cityName="" }) {
+const WeatherCard = ({ cityName="" }) => {
     const { data: coordinatesData, isSuccess: foundCity } = useGetCoordinatesQuery(cityName ? cityName : skipToken);
     const { data: weatherData, isSuccess: weatherSuccess } = useGetWeatherQuery(foundCity ? {latitude: coordinatesData[0].lat, longitude: coordinatesData[0].lon} : skipToken);
 
     if (!foundCity) {
-        return <h2>Error: Could not find city</h2>;
+        return <h2>Searching for City...</h2>;
     } else if (foundCity && !weatherSuccess) {
-        return <h2>Loading Weather</h2>
+        return <h2>Loading Weather...</h2>
     } else {
-        console.log(weatherData);
+        // console.log(weatherData);
         return (<WeatherContent
             city={coordinatesData[0].name}
             state={coordinatesData[0].state}
@@ -49,6 +49,8 @@ export default function WeatherCard({ cityName="" }) {
 }
 
 const WeatherContent = ({ city="", state="", country="", description="Description", temp="-273.15", humidity="50", weatherIcon="10d"}) => {
+    const dispatch = useDispatch();
+
     return (
         <Card variant="outlined" sx={{ maxWidth: 345 }}>
             {/* Call weather API to get weather Icon image */}
@@ -61,7 +63,7 @@ const WeatherContent = ({ city="", state="", country="", description="Descriptio
             </CardContent>
             <CardActions>
                 {/* TODO: add onClick to dismiss the button */}
-                <Button size="small" color="primary">Dismiss</Button>
+                <Button size="small" color="primary" onClick={() => dispatch(removeLocation(city))}>Dismiss</Button>
             </CardActions>
         </Card>
     );
