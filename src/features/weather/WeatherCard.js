@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { skipToken } from '@reduxjs/toolkit/query/react'
+import { skipToken } from '@reduxjs/toolkit/query/react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,12 +13,12 @@ import { removeLocation } from './locationsSlice';
 export default function WeatherDisplay ({ locations }) {
     // TODO: fetch data from list of cities
    
-    // console.log(locations);
+    console.log(locations);
     return (
         <Grid container spacing={3}>
             {locations.map(location => (
-                <Grid item xs={3}>
-                    <WeatherCard key={location} cityName={location} />
+                <Grid item xs={3} key={location}>
+                    <WeatherCard cityName={location} />
                 </Grid>
             ))}
         </Grid>

@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 export const locationsSlice = createSlice({
     name: 'locations',
     initialState: {
-        locationsList: ["Champaign", "Bangkok"]
+        locationsList: [],
+        // locationsList: ["Champaign", "Bangkok"],
+        weatherList: []
         // locationsList: ["Champaign", "Bangkok", "Kansas City", "London", "New Jersey", "Paris"],
     },
     reducers: {

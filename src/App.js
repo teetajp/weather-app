@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import WeatherDisplay from './features/weather/WeatherCard';
-import { addLocation, removeLocation } from './features/weather/locationsSlice';
+import { addLocation } from './features/weather/locationsSlice';
 
 // TODO: style app with material UI
 
@@ -14,9 +15,9 @@ function App() {
   const dispatch = useDispatch();
   const locations = useSelector((state) => state.locations.locationsList);
   
-  const handleButtonClick = () => {
+  const handleSearchButtonClick = () => {
     dispatch(addLocation(city));
-    console.log(locations);
+    // console.log(locations);
   }
 
   return (
@@ -26,7 +27,7 @@ function App() {
       <div>
         {/*  TODO: Make text field and button align on the same row/height */}
         <TextField label="City" value={city} onChange={(e) => setCity(e.target.value)}/>
-        <Button variant="contained" onClick={handleButtonClick}>Search</Button>
+        <Button variant="contained" onClick={() => handleSearchButtonClick()}>Search</Button>
       </div>
       <WeatherDisplay locations={locations}/>
     </div>
