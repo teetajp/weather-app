@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 const API_BASE_URL = 'http://api.openweathermap.org/';
+// Must get API key from https://home.openweathermap.org/users/sign_up at paste it in .env as REACT_APP_OPENWEATHER_API_KEY
 
 export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (cityName) => {
     try {

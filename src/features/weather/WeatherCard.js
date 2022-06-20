@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -27,8 +28,11 @@ const WeatherCard = ({ id="", city="", state="", country="", description="Descri
     const dispatch = useDispatch();
     return (
         <Card variant="outlined" sx={{ maxWidth: 345 }}>
-            <CardMedia component="img" sx={{ width: 100}} image={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt={weatherIcon}/>
-            <h2>{(temp - 273.15).toFixed(1)} °C</h2>
+            <Box sx={{ display: 'flex' }}>
+                <CardMedia component="img" sx={{ width: 100}} image={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt={weatherIcon} />
+                <h2>{(temp - 273.15).toFixed(1)} °C</h2>
+            </Box>
+            
             <CardContent>
                 <h2>{city && city !== state ? city + "," : ""} {state ? state + "," : ""} {country ? country : ""}</h2>
                 <h3>Feels like {(feels_like - 273.15).toFixed(1)} °C</h3>
