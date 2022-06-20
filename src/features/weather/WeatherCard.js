@@ -27,6 +27,7 @@ export default function WeatherDisplay () {
 }
 // TODO: style weather card component
 const WeatherCard = ({ data }) => {
+    // TODO: combine WeatherCard and WeatherContent into one component or make them distinct components
     // if (!foundCity) {
     //     return <h2>Searching for City...</h2>;
     // } else if (foundCity && !weatherSuccess) {
@@ -48,7 +49,6 @@ const WeatherContent = ({ id="", city="", state="", country="", description="Des
                 <h3>Humidity: {humidity}%</h3>
             </CardContent>
             <CardActions>
-                {/* TODO: add onClick to dismiss the button */}
                 <Button size="small" color="primary" onClick={() => dispatch(weatherRemoved(id))}>Dismiss</Button>
             </CardActions>
         </Card>

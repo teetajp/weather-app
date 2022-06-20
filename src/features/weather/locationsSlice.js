@@ -33,7 +33,6 @@ export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (ci
                 humidity: weatherResponse.data.main.humidity,
                 weatherIcon: weatherResponse.data.weather[0].icon
         };
-       console.log(returnObject);
        return returnObject;
     } catch (err) {
         return err.message;
@@ -57,13 +56,6 @@ export const locationsSlice = createSlice({
         error: null
     },
     reducers: {
-        weatherAdded: (state, action) => {
-            // Only add weather data if it doesn't already exist
-            if (!state.weatherData.find(weather => weather.id === action.payload.id)) {
-                state.weatherData.push(action.payload);
-            }
-            // TODO: show alert if data already exists
-        },
         weatherRemoved: (state, action) => {
             state.weatherData = state.weatherData.filter(location => location.id !== action.payload);
         },
@@ -77,7 +69,12 @@ export const locationsSlice = createSlice({
             .addCase(fetchWeather.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 // Add newly fetched weather data to the list
-                state.weatherData = state.weatherData.concat(action.payload);
+                if (!state.weatherData.find(weather => weather.id === action.payload.id)) {
+                    state.weatherData = state.weatherData.concat(action.payload);
+                } else {
+                    state.error = 'Weather data for searched term already exists.';
+                    console.log(state.error);
+                }
             })
             .addCase(fetchWeather.rejected, (state, action) => {
                 state.status = 'failed';
