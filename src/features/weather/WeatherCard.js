@@ -7,7 +7,6 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { useGetCoordinatesQuery, useGetWeatherQuery, useGetLocationWeatherQuery } from '../api/weatherApiSlice';
 import { removeLocation } from './locationsSlice';
 
 export default function WeatherDisplay ({ locations }) {
