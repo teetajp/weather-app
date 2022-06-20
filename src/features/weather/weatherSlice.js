@@ -1,40 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-const BASE_URL = 'http://api.openweathermap.org/';
+const API_BASE_URL = 'http://api.openweathermap.org/';
 
 export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (cityName) => {
     try {
-        /* Three Geocoding API responses:
-        *  1. Error (non-200 status code)
-        *  2. 200 stats code but Empty array --> when search fails
-        *  3. Non-empty array --> when search succeeds (can be more than 1 result in array, so we take top-most)
-        */
-        const coordinatesResponse = await axios.get(BASE_URL + `geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`);
+        const coordinatesResponse = await axios.get(API_BASE_URL + `geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`);
         if (coordinatesResponse.data.length === 0) {
             throw Error('No results matching search term found.');
         }
-        const {lat: latitude, lon: longitude } = coordinatesResponse.data[0]; // top-most result
-
-        /* Three Geocoding API responses:
-        *  1. Error (non-200 status code)
-        *  2. non-empty object containing all the data
-        *  3. error object containg "cod", for code, and "message" --> automatically caught as error
-        */
-        const weatherResponse = await axios.get(BASE_URL + `/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}&lang=en`);
+        // Fetch the weather data for the top-most result of the searched term
+        const weatherResponse = await axios.get(API_BASE_URL + `/data/2.5/weather?lat=${coordinatesResponse.data[0].lat}&lon=${coordinatesResponse.data[0].lon}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}&lang=en`);
        
-        const returnObject =  {
-                id: weatherResponse.data.id,
-                city: coordinatesResponse.data[0].name,
-                state: coordinatesResponse.data[0].state,
-                country: coordinatesResponse.data[0].country,
-                description: weatherResponse.data.weather[0].description,
-                temp: weatherResponse.data.main.temp,
-                feels_like: weatherResponse.data.main.feels_like,
-                humidity: weatherResponse.data.main.humidity,
-                wind_speed: weatherResponse.data.wind.speed,
-                weatherIcon: weatherResponse.data.weather[0].icon
+       return {
+            id: weatherResponse.data.id,
+            city: coordinatesResponse.data[0].name,
+            state: coordinatesResponse.data[0].state,
+            country: coordinatesResponse.data[0].country,
+            description: weatherResponse.data.weather[0].description,
+            temp: weatherResponse.data.main.temp,
+            feels_like: weatherResponse.data.main.feels_like,
+            humidity: weatherResponse.data.main.humidity,
+            wind_speed: weatherResponse.data.wind.speed,
+            weatherIcon: weatherResponse.data.weather[0].icon
         };
-       return returnObject;
     } catch (err) {
         return err.message;
     }
@@ -69,22 +57,24 @@ export const weatherSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(fetchWeather.pending, (state, action) => {
-                state.status = 'loading';
+                state.status = 'pending';
+                state.error = null;
             })
             .addCase(fetchWeather.fulfilled, (state, action) => {
                 state.status = 'fulfilled';
                 // Add newly fetched weather data to the list
                 if (!state.weatherData.find(weather => weather.id === action.payload.id)) {
                     state.weatherData = state.weatherData.concat(action.payload);
+                    state.error = null;
                 } else {
-                    state.error = 'Weather data for searched term already exists.';
-                    console.log(state.error); // TODO: remove this and add an alert
+                    state.status = 'failed';
+                    state.error = 'Error: City already added.';
                 }
             })
             .addCase(fetchWeather.rejected, (state, action) => {
-                state.status = 'failed';
                 // Save error message so we can display it to the user
                 state.error = action.error.message;
+                state.status = 'failed';
             })
     }
 });
