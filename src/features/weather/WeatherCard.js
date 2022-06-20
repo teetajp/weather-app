@@ -1,21 +1,23 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+
+import Typography from '@mui/material/Typography';
 import { selectAllWeatherData, weatherRemoved } from './weatherSlice';
 
 export default function WeatherDisplay () {
     const weatherData = useSelector(selectAllWeatherData);
     
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={4} justifyContent="center">
             {weatherData.map(weatherLocation => (
-                <Grid item xs={3} key={weatherLocation.id}>
+                <Grid item xs="auto" key={weatherLocation.id}>
                     <WeatherCard {...weatherLocation}/>
                 </Grid>
             ))}
@@ -30,18 +32,18 @@ const WeatherCard = ({ id="", city="", state="", country="", description="Descri
         <Card variant="outlined" sx={{ maxWidth: 345 }}>
             <Box sx={{ display: 'flex' }}>
                 <CardMedia component="img" sx={{ width: 100}} image={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt={weatherIcon} />
-                <h2>{(temp - 273.15).toFixed(1)} °C</h2>
+                <Typography variant="h2">{(temp - 273.15).toFixed(1)} °C</Typography>
             </Box>
             
-            <CardContent>
-                <h2>{city && city !== state ? city + "," : ""} {state ? state + "," : ""} {country ? country : ""}</h2>
-                <h3>Feels like {(feels_like - 273.15).toFixed(1)} °C</h3>
-                <h3>{description.charAt(0).toUpperCase() + description.slice(1)}</h3>
-                <h3>Wind speed: {wind_speed} m/s</h3>
-                <h3>Humidity: {humidity}%</h3>
+            <CardContent align="left">
+                <Typography variant="h4" gutterBottom>{city && city !== state ? city + "," : ""} {state ? state + "," : ""} {country ? country : ""}</Typography>
+                <Typography variant="h5" gutterBottom>Feels like {(feels_like - 273.15).toFixed(1)} °C</Typography>
+                <Typography variant="h5" gutterBottom>{description.charAt(0).toUpperCase() + description.slice(1)}</Typography>
+                <Typography variant="h5" gutterBottom>Wind speed: {wind_speed} m/s</Typography>
+                <Typography variant="h5">Humidity: {humidity}%</Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" color="primary" onClick={() => dispatch(weatherRemoved(id))}>Dismiss</Button>
+                <Button size="large" color="warning" onClick={() => dispatch(weatherRemoved(id))}>Dismiss</Button>
             </CardActions>
         </Card>
     );

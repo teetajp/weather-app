@@ -2,12 +2,14 @@ import React from 'react';
 import './App.css';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import Link from '@mui/material/Link';
 import WeatherForm from './features/weather/WeatherForm';
 import WeatherDisplay from './features/weather/WeatherCard';
 import { useSelector } from 'react-redux';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function Copyright() {
   return (
@@ -45,7 +47,7 @@ function App() {
   const weatherError = useSelector(state => state.weather.error);
   const weatherStatus = useSelector(state => state.weather.status);
   // TODO: add typescript
-  
+
   /*  TODO:
   - add spacing/margin around all componets from the edges
   - add spacing between components
@@ -54,16 +56,22 @@ function App() {
   - adjust spacing between font and weather Icon
    */ 
   return (
-    <div>
-      { weatherStatus === 'pending' ? <LinearProgress /> : 
-        weatherStatus === 'failed' ? <Alert severity="error">{weatherError}</Alert> : null }
-      <Typography variant="h1">Weather App</Typography>
-      <Typography variant="h2">Search for a city to get its weather conditions.</Typography>
-      <WeatherForm />
-      {/* Add spacing between form and cards */}
-      <WeatherDisplay/>
+    <>
+      <CssBaseline  />
+      <main>
+        { weatherStatus === 'pending' ? <LinearProgress /> : 
+          weatherStatus === 'failed' ? <Alert severity="error">{weatherError}</Alert> : null }
+          <Container maxWidth="xl">
+            <Typography variant="h1" align="center" color="textPrimary">Weather App</Typography>
+            <Typography variant="h4" gutterBottom align="center" color="textSecondary">Search for a city to get its weather conditions.</Typography>
+          </Container>
+        <WeatherForm/>
+        <br/>
+        {/* Add spacing between form and cards */}
+        <WeatherDisplay/>
+      </main>
       <Footer  />
-    </div>
+    </>
   );
 }
 

@@ -11,11 +11,11 @@ export default function WeatherForm() {
     const dispatch = useDispatch();
 
     return (<>
-        <Grid container alignItems="top">
-            <Grid item xs={3}>
+        <Grid container alignItems="top" spacing={2} justifyContent="center">
+            <Grid item xs={4}>
                 <TextField fullWidth label="City" value={searchCity} onChange={(e) => setSearchCity(e.target.value)}/>
             </Grid>
-            <Grid item xs={1.5}>
+            <Grid item xs={2}>
                 <Button fullWidth sx={{ height: '56px' }} variant="contained" onClick={() => dispatch(fetchWeather(searchCity))}>Search</Button>
             </Grid>
         </Grid>

@@ -12,7 +12,7 @@ export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (ci
         // Fetch the weather data for the top-most result of the searched term
         const weatherResponse = await axios.get(API_BASE_URL + `/data/2.5/weather?lat=${coordinatesResponse.data[0].lat}&lon=${coordinatesResponse.data[0].lon}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}&lang=en`);
        
-       return {
+        return {
             id: weatherResponse.data.id,
             city: coordinatesResponse.data[0].name,
             state: coordinatesResponse.data[0].state,
@@ -25,7 +25,7 @@ export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (ci
             weatherIcon: weatherResponse.data.weather[0].icon
         };
     } catch (err) {
-        return err.message;
+        throw err;
     }
 })
 
