@@ -3,7 +3,6 @@ import axios from 'axios';
 const BASE_URL = 'http://api.openweathermap.org/';
 
 export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (cityName) => {
-    // check asyncThunk parameters (state, dispatch)
     try {
         /* Three Geocoding API responses:
         *  1. Error (non-200 status code)
@@ -30,7 +29,9 @@ export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (ci
                 country: coordinatesResponse.data[0].country,
                 description: weatherResponse.data.weather[0].description,
                 temp: weatherResponse.data.main.temp,
+                feels_like: weatherResponse.data.main.feels_like,
                 humidity: weatherResponse.data.main.humidity,
+                wind_speed: weatherResponse.data.wind.speed,
                 weatherIcon: weatherResponse.data.weather[0].icon
         };
        return returnObject;
@@ -39,19 +40,24 @@ export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (ci
     }
 })
 
-export const locationsSlice = createSlice({
-    name: 'locations',
+// Sample weather object
+// { 
+//     id: 1,
+//     city: "Bangkok",
+//     state: "",
+//     country: "TH",
+//     description: "clear sky",
+//     temp: 292.6,
+//     feels_like: 300.1,
+//     humidity: 61,
+//     wind_speed: 1.5, (default of meters/sec)
+//     weatherIcon: "01n"
+// }
+
+export const weatherSlice = createSlice({
+    name: 'weather',
     initialState: {
-        weatherData: [{ // sample weather object
-            id: 1,
-            city: "Bangkok",
-            state: "",
-            country: "TH",
-            description: "clear sky",
-            temp: 292.6,
-            humidity: 61,
-            weatherIcon: "01n"
-        }],
+        weatherData: [],
         status: 'idle',
         error: null
     },
@@ -61,7 +67,6 @@ export const locationsSlice = createSlice({
         },
     },
     extraReducers(builder) {
-        // TODO: fix this as it causes React to stop rendering
         builder
             .addCase(fetchWeather.pending, (state, action) => {
                 state.status = 'loading';
@@ -73,7 +78,7 @@ export const locationsSlice = createSlice({
                     state.weatherData = state.weatherData.concat(action.payload);
                 } else {
                     state.error = 'Weather data for searched term already exists.';
-                    console.log(state.error);
+                    console.log(state.error); // TODO: remove this and add an alert
                 }
             })
             .addCase(fetchWeather.rejected, (state, action) => {
@@ -86,18 +91,8 @@ export const locationsSlice = createSlice({
 
 
 // Action creators for each case reducer function
-export const { weatherAdded, weatherRemoved } = locationsSlice.actions;
+export const { weatherRemoved } = weatherSlice.actions;
 
-export default locationsSlice.reducer;
+export default weatherSlice.reducer;
 
-export const selectAllWeatherData = state => state.locations.weatherData;
-
-export const selectWeatherById = (state, weatherId) => {
-    state.locations.find(weather => weather.id === weatherId);
-}
-
-// {
-//     // Multiple possible status enum values
-//     status: 'idle' | 'loading' | 'succeeded' | 'failed',
-//     error: string | null
-// }
+export const selectAllWeatherData = state => state.weather.weatherData;
