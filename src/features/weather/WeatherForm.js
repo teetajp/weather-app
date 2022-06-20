@@ -4,17 +4,17 @@ import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { addLocation, fetchCityWeather } from '../weather/locationsSlice';
-import { skipToken } from '@reduxjs/toolkit/query/react';
+import { fetchWeather } from '../weather/locationsSlice';
 
 
 export default function WeatherForm() {
     //  TODO: Make text field and button align on the same row/height
     const [searchCity, setSearchCity] = useState('');
     const dispatch = useDispatch();
+    
 
     const handleSearchButtonClick = () => {
-        dispatch(fetchCityWeather(searchCity));
+        dispatch(fetchWeather(searchCity));
         // TODO: check if search query is valid
         // TODO: If so, then get weather and add to weatherlist, with lat/lon as ID
         // TODO: If not, show an alert that its invalid 

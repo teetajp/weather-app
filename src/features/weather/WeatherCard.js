@@ -1,23 +1,24 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { skipToken } from '@reduxjs/toolkit/query/react';
+import { useDispatch, useSelector } from 'react-redux';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { removeLocation } from './locationsSlice';
+import { selectAllWeatherData, weatherRemoved } from './locationsSlice';
 
-export default function WeatherDisplay ({ locations }) {
-    // TODO: fetch data from list of cities
-   
-    console.log(locations);
+export default function WeatherDisplay () {
+    const weatherData = useSelector(selectAllWeatherData);
+    const weatherStatus = useSelector(state => state.locations.status);
+    const weatherError = useSelector(state => state.locations.error);
+
+    // console.log(weatherData);
     return (
         <Grid container spacing={3}>
-            {locations.map(location => (
-                <Grid item xs={3} key={location}>
-                    <WeatherCard cityName={location} />
+            {weatherData.map(weatherLocation => (
+                <Grid item xs={3} key={weatherLocation.id}>
+                    <WeatherCard data={weatherLocation}/>
                 </Grid>
             ))}
         </Grid>
@@ -25,35 +26,20 @@ export default function WeatherDisplay ({ locations }) {
     );
 }
 // TODO: style weather card component
-const WeatherCard = ({ cityName="" }) => {
-    // const { data: coordinatesData, isSuccess: foundCity } = useGetCoordinatesQuery(cityName ? cityName : skipToken);
-    // const { data: weatherData, isSuccess: weatherSuccess } = useGetWeatherQuery(foundCity ? {latitude: coordinatesData[0].lat, longitude: coordinatesData[0].lon} : skipToken);
-
+const WeatherCard = ({ data }) => {
     // if (!foundCity) {
     //     return <h2>Searching for City...</h2>;
     // } else if (foundCity && !weatherSuccess) {
     //     return <h2>Loading Weather...</h2>
-    // } else {
-    //     // console.log(weatherData);
-    //     return (<WeatherContent
-    //         city={coordinatesData[0].name}
-    //         state={coordinatesData[0].state}
-    //         country={coordinatesData[0].country}
-    //         description={weatherData.weather[0].description}
-    //         temp={weatherData.main.temp}
-    //         humidity={weatherData.main.humidity}
-    //         weatherIcon={weatherData.weather[0].icon}
-    //     />);
-    // }
-    return <p>temp</p>
+    
+    return <WeatherContent id={data.id} city={data.city} state={data.state} country={data.country} description={data.description} temp={data.temp} humidity={data.humidity} weatherIcon={data.weatherIcon}/>;
 }
 
-const WeatherContent = ({ city="", state="", country="", description="Description", temp="-273.15", humidity="50", weatherIcon="10d"}) => {
+const WeatherContent = ({ id="", city="", state="", country="", description="Description", temp="-273.15", humidity="50", weatherIcon="10d"}) => {
     const dispatch = useDispatch();
-
+    // TODO: add loading bar from https://mui.com/material-ui/react-progress/
     return (
         <Card variant="outlined" sx={{ maxWidth: 345 }}>
-            {/* Call weather API to get weather Icon image */}
             <CardMedia component="img" sx={{ width: 100}} image={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt={weatherIcon}/>
             <CardContent>
                 <h2>{city && city !== state ? city + "," : ""} {state ? state + "," : ""} {country ? country : ""}</h2>
@@ -63,7 +49,7 @@ const WeatherContent = ({ city="", state="", country="", description="Descriptio
             </CardContent>
             <CardActions>
                 {/* TODO: add onClick to dismiss the button */}
-                <Button size="small" color="primary" onClick={() => dispatch(removeLocation(city))}>Dismiss</Button>
+                <Button size="small" color="primary" onClick={() => dispatch(weatherRemoved(id))}>Dismiss</Button>
             </CardActions>
         </Card>
     );

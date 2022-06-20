@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import WeatherForm from './features/weather/WeatherForm';
 import WeatherDisplay from './features/weather/WeatherCard';
-import { addLocation, selectAllWeatherData} from './features/weather/locationsSlice';
+import { selectAllWeatherData} from './features/weather/locationsSlice';
 
 // TODO: style app with material UI
 
@@ -16,7 +16,7 @@ function App() {
       <h1>Weather App</h1>
       <h2>Search for a city to get its weather conditions.</h2>
       <WeatherForm />
-      {/* <WeatherDisplay locations={locations}/> */}
+      <WeatherDisplay/>
     </div>
   );
 }

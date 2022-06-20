@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 const BASE_URL = 'http://api.openweathermap.org/';
 
-export const fetchCityWeather = createAsyncThunk('locations/fetchCityWeather', async (cityName) => {
+export const fetchWeather = createAsyncThunk('locations/fetchWeather', async (cityName) => {
     // check asyncThunk parameters (state, dispatch)
     try {
         /* Three Geocoding API responses:
@@ -44,6 +44,7 @@ export const locationsSlice = createSlice({
     name: 'locations',
     initialState: {
         weatherData: [{ // sample weather object
+            id: 1,
             city: "Bangkok",
             state: "",
             country: "TH",
@@ -51,32 +52,55 @@ export const locationsSlice = createSlice({
             temp: 292.6,
             humidity: 61,
             weatherIcon: "01n"
-        }]
+        }],
+        status: 'idle',
+        error: null
     },
     reducers: {
-        addLocation: (state, action) => {
-            // TODO: check that id doesnt match existing data (using city ID from current weather API)
-            state.locationsList.push(action.payload);
-            // const { data: coordinatesData, isSuccess: foundCity } = useGetCoordinatesQuery(cityName ? cityName : skipToken);
-    
+        weatherAdded: (state, action) => {
+            // Only add weather data if it doesn't already exist
+            if (!state.weatherData.find(weather => weather.id === action.payload.id)) {
+                state.weatherData.push(action.payload);
+            }
+            // TODO: show alert if data already exists
         },
-        removeLocation: (state, action) => {
-            state.locationsList = state.locationsList.filter(location => location !== action.payload);
+        weatherRemoved: (state, action) => {
+            state.weatherData = state.weatherData.filter(location => location.id !== action.payload);
         },
     },
-    // extraReducers(builder) { .TODO: fix this as it causes React to stop rendering
-    //     builder.addCase()
-    // }
+    extraReducers(builder) {
+        // TODO: fix this as it causes React to stop rendering
+        builder
+            .addCase(fetchWeather.pending, (state, action) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchWeather.fulfilled, (state, action) => {
+                state.status = 'fulfilled';
+                // Add newly fetched weather data to the list
+                state.weatherData = state.weatherData.concat(action.payload);
+            })
+            .addCase(fetchWeather.rejected, (state, action) => {
+                state.status = 'failed';
+                // Save error message so we can display it to the user
+                state.error = action.error.message;
+            })
+    }
 });
 
 
 // Action creators for each case reducer function
-export const { addLocation, removeLocation } = locationsSlice.actions;
+export const { weatherAdded, weatherRemoved } = locationsSlice.actions;
 
 export default locationsSlice.reducer;
 
 export const selectAllWeatherData = state => state.locations.weatherData;
 
-export const selectWeatherByLatLon = (state, lat, lon) => {
-    state.locations.find(loc => loc.lat === lat && loc.lon === lon);
+export const selectWeatherById = (state, weatherId) => {
+    state.locations.find(weather => weather.id === weatherId);
 }
+
+// {
+//     // Multiple possible status enum values
+//     status: 'idle' | 'loading' | 'succeeded' | 'failed',
+//     error: string | null
+// }
