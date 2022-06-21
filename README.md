@@ -3,6 +3,8 @@
 ### Weather data from OpenWeatherMap
 
 App idea from: https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.mdhttps://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Weather-App.md
+
+IMPORTANT: Must get API key from https://home.openweathermap.org/users/sign_up at paste it in .env as REACT_APP_OPENWEATHER_API_KEY
 ### `npm start`
 
 Runs the app in the development mode.\
