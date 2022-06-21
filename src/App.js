@@ -47,14 +47,6 @@ function App() {
   const weatherError = useSelector(state => state.weather.error);
   const weatherStatus = useSelector(state => state.weather.status);
   // TODO: add typescript
-
-  /*  TODO:
-  - add spacing/margin around all componets from the edges
-  - add spacing between components
-  - set a theme for the app
-  - make font for Temp bigger
-  - adjust spacing between font and weather Icon
-   */ 
   return (
     <>
       <CssBaseline  />
@@ -62,8 +54,8 @@ function App() {
         { weatherStatus === 'pending' ? <LinearProgress /> : 
           weatherStatus === 'failed' ? <Alert severity="error">{weatherError}</Alert> : null }
           <Container maxWidth="xl">
-            <Typography variant="h1" align="center" color="textPrimary">Weather App</Typography>
-            <Typography variant="h4" gutterBottom align="center" color="textSecondary">Search for a city to get its weather conditions.</Typography>
+            <Typography variant="h1" align="center" color="textPrimary" sx={{margin: "15px"}}>Weather App</Typography>
+            <Typography variant="h4" gutterBottom align="center" color="textSecondary" sx={{margin: "20px"}}>Search for a city to get its weather conditions.</Typography>
           </Container>
         <WeatherForm/>
         <br/>
